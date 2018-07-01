@@ -122,6 +122,11 @@ namespace GameArchives
                   Seven45.Seven45Package.IsSeven45,
                   Seven45.Seven45Package.OpenFile
                 ),
+                new PackageType("Vicarious Visions Alchemy PAK",
+                  new string[] { "*.pak" },
+                  Alchemy.IGAPackage.IsIGAPak,
+                  Alchemy.IGAPackage.OpenFile
+                ),
               //new PackageType("", new string[] { }, null, null, null)
               };
     }

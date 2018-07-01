@@ -50,6 +50,9 @@
     <Reference Include="System.Drawing" Condition="&#xD;&#xA;'$(Configuration)' != 'Release-minimal' " />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Alchemy\IGADirectory.cs" />
+    <Compile Include="Alchemy\IGAFile.cs" />
+    <Compile Include="Alchemy\IGAPackage.cs" />
     <Compile Include="ArchiveInterfaces.cs" />
     <Compile Include="Ark\ArkDirectory.cs" />
     <Compile Include="Ark\ArkPackage.cs" />

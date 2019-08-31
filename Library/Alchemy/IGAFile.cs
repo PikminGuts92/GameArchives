@@ -5,6 +5,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using GameArchives.Common;
+using SevenZip.Compression.LZMA;
 
 namespace GameArchives.Alchemy
 {
@@ -22,9 +23,9 @@ namespace GameArchives.Alchemy
     private long offset;
     private Stream stream;
     private ushort compressionMode;
-    private uint chunkSize; // Usually 2048
+    private uint padSize; // Usually 2048
 
-    public IGAFile(string name, string tempPath, IDirectory parent, long size, bool compressed, ushort compressionMode, long offset, Stream stream, uint chunkSize)
+    public IGAFile(string name, string tempPath, IDirectory parent, long size, bool compressed, ushort compressionMode, long offset, Stream stream, uint padSize)
     {
       Name = name;
       Parent = parent;
@@ -35,7 +36,7 @@ namespace GameArchives.Alchemy
       this.offset = offset;
       this.stream = stream;
       this.compressionMode = compressionMode;
-      this.chunkSize = chunkSize;
+      this.padSize = padSize;
 
       ExtendedInfo = new Dictionary<string, object>();
       ExtendedInfo.Add("TempPath", tempPath);
@@ -73,20 +74,36 @@ namespace GameArchives.Alchemy
 
     private Stream CreateInflatedStream()
     {
-      uint currentSize = 0;
+      long remainingSize = Size;
       stream.Seek(offset, SeekOrigin.Begin);
       var ms = new MemoryStream();
 
-      while (currentSize < Size)
-      {
-        var deflateSize = stream.ReadUInt16LE();
+      var lzmaDecoder = new SevenZip.Compression.LZMA.Decoder();
+      const int BUFFER_SIZE = 0x8000;
 
-        if (deflateSize < Size)
+      int i = 0;
+      var start = 0L;
+      List<uint> sizes = new List<uint>();
+      while (remainingSize > 0)
+      {
+        start = stream.Position;
+        var chunkSize = stream.ReadUInt16LE();
+        var chunkSizeUnc = (remainingSize < BUFFER_SIZE) ? remainingSize : BUFFER_SIZE;
+
+        if (chunkSize < BUFFER_SIZE)
         {
-          if ((compressionMode & 0x2000) != 0) deflateSize += 5; // Skips unneeded data
-          
-          var data = InflateBlock(stream.ReadBytes(deflateSize));
-          ms.Write(data, 0, data.Length);
+          stream.Position += 1;
+          sizes.Add(stream.ReadUInt32LE());
+          stream.Position -= 5;
+
+          if ((compressionMode & 0x2000) != 0)
+            lzmaDecoder.SetDecoderProperties(stream.ReadBytes(5)); // Properties + dictionary size
+
+          lzmaDecoder.Code(stream, ms, chunkSize, chunkSizeUnc, null); // Doesn't do anything with progress anyway :(
+
+
+          //var data = InflateBlock(stream.ReadBytes(deflateSize));
+          //ms.Write(data, 0, data.Length);
         }
         else
         {
@@ -94,11 +111,18 @@ namespace GameArchives.Alchemy
         }
 
         // Rounds up to chunk size
-        if ((stream.Position % chunkSize) > 0)
-          stream.Position += chunkSize - (stream.Position % chunkSize);
+        if ((stream.Position % this.padSize) > 0)
+          stream.Position += this.padSize - (stream.Position % this.padSize);
 
+        remainingSize -= chunkSizeUnc;
+        i++;
+        /*
+        currentSize += BUFFER_SIZE;
+        if (currentSize > Size)
+          currentSize = ms.Length;
+        */
       }
-
+      ms.Seek(0, SeekOrigin.Begin);
       return ms;
     }
 

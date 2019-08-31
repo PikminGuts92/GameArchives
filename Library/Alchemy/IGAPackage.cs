@@ -57,7 +57,34 @@ namespace GameArchives.Alchemy
       // Reads compact file sizes
       stream.Seek(fileCount * 16, SeekOrigin.Current);
       var compactSizes = stream.ReadBytes(FindMagic(stream, 0xFFFFFFFF)); // Used for compressed chunks
-      
+
+      int GetTotalSize(byte[] data)
+      {
+        int idx = 0, sum = 0;
+        var count = 0;
+
+        while (idx < data.Length)
+        {
+          var current = 0;
+          while ((data[idx] & 0x80) != 0)
+          {
+            current += data[idx] & 0x7F;
+            idx++;
+            break;
+          }
+
+          sum += current;
+
+          sum += data[idx];
+          idx++;
+          count++;
+        }
+
+        return sum;
+      }
+
+      var total = GetTotalSize(compactSizes);
+
       // Reads file names
       stream.Seek(fileNamesOffset, SeekOrigin.Begin);
 

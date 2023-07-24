@@ -6,6 +6,9 @@ You can get the most up-to-date release from [Appveyor](https://ci.appveyor.com/
 (download the Release-x.x.x.x.zip file).
 
 ## Supported Archive Formats
+### Arc (.arc)
+Archive format used in Dance Masters for Xbox 360
+
 ### Ark (*.hdr, *.ark)
 This format is used in many Harmonix games, including but not limited to:
 * Frequency

@@ -51,6 +51,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArchiveInterfaces.cs" />
+    <Compile Include="Arc\ArcDirectory.cs" />
+    <Compile Include="Arc\ArcFile.cs" />
+    <Compile Include="Arc\ArcPackage.cs" />
     <Compile Include="Ark\ArkDirectory.cs" />
     <Compile Include="Ark\ArkPackage.cs" />
     <Compile Include="Ark\HdrCryptStream.cs" />

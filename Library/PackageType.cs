@@ -131,6 +131,11 @@ namespace GameArchives
                   Seven45.Seven45Package.IsSeven45,
                   Seven45.Seven45Package.OpenFile
                 ),
+                new PackageType("Dance Masters (.arc)",
+                  new string[] { ".arc" },
+                  Arc.ArcPackage.IsArc,
+                  Arc.ArcPackage.OpenFile
+                ),
               //new PackageType("", new string[] { }, null, null, null)
               };
     }

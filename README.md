@@ -26,6 +26,7 @@ Versions 1 through 7, 9, and 10 are supported at this time.
 This format is used in some FreeStyleGames games, including:
 * DJ Hero 2
 * Guitar Hero Live
+* Sing Party
 
 #### Notes
 Usually, these are on disc as DISC0.img.part0, DISC0.img.part1.

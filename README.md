@@ -7,7 +7,7 @@ You can get the most up-to-date release from [Appveyor](https://ci.appveyor.com/
 
 ## Supported Archive Formats
 ### Arc (.arc)
-Archive format used in Dance Masters for Xbox 360
+Archive format used in Dance Masters and Dance Dance Revolution (2010) for Xbox 360
 
 ### Ark (*.hdr, *.ark)
 This format is used in many Harmonix games, including but not limited to:
@@ -39,6 +39,9 @@ This format is used in some FreeStyleGames games, including:
 * Sing Party
 
 This format may use compression.
+
+### Konami Bin (.hbn, .bin)
+Archive format used in Dance Dance Revolution Universe 1-3 for Xbox 360.
 
 ### PFS (pfs_image.dat, etc)
 This format is used for downloadable content and games on the PS4. It is structured much like the Unix File System.

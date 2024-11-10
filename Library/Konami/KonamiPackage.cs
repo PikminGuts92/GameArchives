@@ -1,9 +1,6 @@
-﻿using GameArchives.Arc;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 
 namespace GameArchives.Konami
@@ -90,7 +87,7 @@ namespace GameArchives.Konami
     public override IDirectory RootDirectory => root;
     public override long Size => stream.Length;
     public override bool Writeable => false;
-    public override Type FileType => typeof(ArcFile);
+    public override Type FileType => typeof(KonamiFile);
 
     private Stream stream;
     private KonamiDirectory root;

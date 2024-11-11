@@ -47,6 +47,9 @@ Archive format used in Dance Dance Revolution Universe 1-3 for Xbox 360.
 This format is used for downloadable content and games on the PS4. It is structured much like the Unix File System.
 PKG files from game discs and downloads contain encrypted (and compressed?) PFS images within them.
 
+### Double Fine PKG (.pkg)
+Archive format used in Psychonauts on PC.
+
 ### PSARC (*.psarc, *.pak)
 This format is used commonly in Playstation 3 and 4 games, and usually has the extension .psarc.
 The files within can be compressed with zlib or lzma. Currently, only zlib-compressed archives are supported.

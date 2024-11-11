@@ -141,6 +141,11 @@ namespace GameArchives
                   Konami.KonamiPackage.IsKonami,
                   Konami.KonamiPackage.OpenFile
                 ),
+                new PackageType("Psychonauts",
+                  new string[] { "*.pkg" },
+                  DoubleFine.PKGPackage.IsPkg,
+                  DoubleFine.PKGPackage.OpenFile
+                ),
               //new PackageType("", new string[] { }, null, null, null)
               };
     }

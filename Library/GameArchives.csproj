@@ -84,6 +84,9 @@
     <Compile Include="PKF\PKFDirectory.cs" />
     <Compile Include="PKF\PKFFile.cs" />
     <Compile Include="PKF\PKFPackage.cs" />
+    <Compile Include="DoubleFine\PKGDirectory.cs" />
+    <Compile Include="DoubleFine\PKGFile.cs" />
+    <Compile Include="DoubleFine\PKGPackage.cs" />
     <Compile Include="PSARC\PSARCDirectory.cs" />
     <Compile Include="PSARC\PSARCFile.cs" />
     <Compile Include="PSARC\PSARCPackage.cs" />

@@ -70,6 +70,7 @@ namespace GameArchives.Seven45
 
     private struct FileEntry
     {
+      public ushort attribute;
       public byte[] unk;
       public ushort dir_num;
       public uint string_num;
@@ -80,7 +81,8 @@ namespace GameArchives.Seven45
 
       public static FileEntry Read(Stream s) => new FileEntry
       {
-        unk = s.ReadBytes(6),
+        attribute = s.ReadUInt16LE(),
+        unk = s.ReadBytes(4),
         dir_num = s.ReadUInt16LE(),
         string_num = s.ReadUInt32LE(),
         offset_num = s.ReadUInt32LE(),
@@ -168,11 +170,20 @@ namespace GameArchives.Seven45
       {
         var entry = fileEntries[i];
         var name = entry.string_num < stringTable.Count ? stringTable[(int)entry.string_num] : "ERROR_FILENAME";
-        bool encrypted = false;
+
+        Func<Stream, Stream> wrapStream = null;
         if (name.EndsWith(".e.2"))
         {
-          encrypted = true;
+          wrapStream = s => new PowerChordCryptStream(s);
           name = name.Remove(name.Length - 4);
+        }
+        else if (fileEntries[i].attribute == 1) // Encrypted
+        {
+          wrapStream = s => new PowerChordCryptStream(s);
+        }
+        else if (fileEntries[i].attribute == 2) // CMP Compressed
+        {
+          wrapStream = s => new CmpStream(s);
         }
         dirs_flat[entry.dir_num].AddFile(new Common.OffsetFile(
           name,
@@ -180,7 +191,7 @@ namespace GameArchives.Seven45
           contentFiles[fileOffsets[entry.offset_num].pk_num],
           fileOffsets[entry.offset_num].pk_offset,
           entry.size,
-          wrapStream: encrypted ? (s => new PowerChordCryptStream(s)) : (Func<Stream,Stream>)null));
+          wrapStream));
       }
     }
 

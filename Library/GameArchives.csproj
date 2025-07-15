@@ -90,6 +90,7 @@
     <Compile Include="PSARC\PSARCDirectory.cs" />
     <Compile Include="PSARC\PSARCFile.cs" />
     <Compile Include="PSARC\PSARCPackage.cs" />
+    <Compile Include="Seven45\CmpStream.cs" />
     <Compile Include="Seven45\PowerChordCryptStream.cs" />
     <Compile Include="Seven45\Seven45Package.cs" />
     <Compile Include="STFS\STFSDirectory.cs" />
